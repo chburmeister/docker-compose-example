@@ -1,0 +1,3 @@
+FROM openjdk:8u121-jre-alpine
+
+ADD target/webclient-*-with-dependencies.jar /data/app.jar

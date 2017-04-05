@@ -1,0 +1,40 @@
+version: '3'
+services:
+  server:
+    build:
+      dockerfile: Dockerfile_server
+      context: .
+    image: webserver:1.0
+    ports:
+     - "10000:9876"
+    command: "java -Xmx1024m -Xms512m -Dserverport=9876 -jar /data/app.jar"
+  client1:
+    build:
+      dockerfile: Dockerfile_client
+      context: .
+    image: webclient:1.0
+    depends_on:
+      - "server"
+    links:
+      - "server:omega"
+    command: "java -Xmx512m -Xms256m -Dtargeturl=http://omega:9876 -Dsleepmsecs=500 -Duseragent=alfred -jar /data/app.jar"
+  client2:
+    build:
+      dockerfile: Dockerfile_client
+      context: .
+    image: webclient:1.0
+    depends_on:
+      - "server"
+    links:
+      - "server:omega"
+    command: "java -Xmx512m -Xms256m -Dtargeturl=http://omega:9876 -Dsleepmsecs=500 -Duseragent=boris -jar /data/app.jar"
+  client3:
+    build:
+      dockerfile: Dockerfile_client
+      context: .
+    image: webclient:1.0
+    depends_on:
+      - "server"
+    links:
+      - "server:omega"
+    command: "java -Xmx512m -Xms256m -Dtargeturl=http://omega:9876 -Dsleepmsecs=500 -Duseragent=charly -jar /data/app.jar"
